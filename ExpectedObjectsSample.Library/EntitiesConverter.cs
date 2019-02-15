@@ -29,11 +29,21 @@ namespace ExpectedObjectsSample.Library
 
         private static IEnumerable<OrderDomain> Convert(IEnumerable<OrderEntity> orders) => orders?.Select(Convert).ToList();
 
-        private static OrderDomain Convert(OrderEntity orderEntity) => orderEntity == null ? null : new OrderDomain
+        private static OrderDomain Convert(OrderEntity orderEntity)
         {
-            OrderNumber =  $"FA-{orderEntity.Id}",
-            OrderDate = orderEntity.OrderDate,
-            OrderDetails = orderEntity.OrderDetails?.Select(Convert).ToList()
-        };
+            var order = orderEntity == null ? null : new OrderDomain
+            {
+                OrderNumber = $"FA-{orderEntity.Id}",
+                OrderDate = orderEntity.OrderDate,
+                OrderDetails = orderEntity.OrderDetails?.Select(Convert).ToList()
+            };
+
+            if (order != null)
+            {
+                order.Total = order.OrderDetails.Sum(od => od.Total);
+            }
+
+            return order;
+        }
     }
 }
