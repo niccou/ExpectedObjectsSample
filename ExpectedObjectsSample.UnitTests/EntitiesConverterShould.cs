@@ -143,7 +143,7 @@ namespace ExpectedObjectsSample.UnitTests
                                 ProductName = "Product 1",
                                 Quantity = 5,
                                 UnitPrice = 12.5,
-                                Total = 65.5
+                                Total = 62.5
                             },
                             new OrderDetailDomain
                             {
@@ -152,8 +152,7 @@ namespace ExpectedObjectsSample.UnitTests
                                 UnitPrice = 5.2,
                                 Total = 52.0
                             }
-                        },
-                        Total = 114.5
+                        }
                     }
                 }
             }.ToExpectedObject();
