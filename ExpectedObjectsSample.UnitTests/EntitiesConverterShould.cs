@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExpectedObjects;
 using ExpectedObjectsSample.Library;
 using ExpectedObjectsSample.Library.Domain;
 using ExpectedObjectsSample.Library.Entities;
@@ -68,7 +69,7 @@ namespace ExpectedObjectsSample.UnitTests
                     {
                         OrderNumber = "FA-10",
                         OrderDate = new DateTime(2017,5,2),
-                        OrderDetails = new OrderDetailDomain[]
+                        OrderDetails = new List<OrderDetailDomain>
                         {
                             new OrderDetailDomain
                             {
@@ -89,6 +90,7 @@ namespace ExpectedObjectsSample.UnitTests
                     }
                 }
             };
+
             //When
             UserDomain convertedUser = EntitiesConverter.Convert(_userEntity);
 
@@ -115,6 +117,52 @@ namespace ExpectedObjectsSample.UnitTests
             Assert.Equal(orderDetailEntity.ProductName, orderDetailDomain.ProductName);
             Assert.Equal(orderDetailEntity.Quantity, orderDetailDomain.Quantity);
             Assert.Equal(orderDetailEntity.UnitPrice, orderDetailDomain.UnitPrice);
+        }
+
+        [Fact]
+        public void ConvertUserEntityToUserDomainVerifiedByExpectedObjects()
+        {
+            //Given
+            var expectedUserDomain = new UserDomain
+            {
+                Id = 1,
+                Name = "Customer",
+                Street = "My street",
+                ZipCode = "ZipCode",
+                City = "City",
+                Orders = new List<OrderDomain>
+                {
+                    new OrderDomain
+                    {
+                        OrderNumber = "FA-10",
+                        OrderDate = new DateTime(2017,5,2),
+                        OrderDetails = new List<OrderDetailDomain>
+                        {
+                            new OrderDetailDomain
+                            {
+                                ProductName = "Product 1",
+                                Quantity = 5,
+                                UnitPrice = 12.5,
+                                Total = 65.5
+                            },
+                            new OrderDetailDomain
+                            {
+                                ProductName = "Product 2",
+                                Quantity = 10,
+                                UnitPrice = 5.2,
+                                Total = 52.0
+                            }
+                        },
+                        Total = 114.5
+                    }
+                }
+            }.ToExpectedObject();
+
+            //When
+            UserDomain convertedUser = EntitiesConverter.Convert(_userEntity);
+
+            //Then
+            expectedUserDomain.ShouldEqual(convertedUser);
         }
     }
 }

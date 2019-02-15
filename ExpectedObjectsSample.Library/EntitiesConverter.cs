@@ -13,7 +13,7 @@ namespace ExpectedObjectsSample.Library
         {
             Id = userEntity.Id,
             Name = userEntity.Name,
-            Orders = Convert(userEntity.Orders),
+            Orders = Convert(userEntity.Orders).ToList(),
             Street = userEntity.UserAddress.Street,
             ZipCode = userEntity.UserAddress.ZipCode,
             City = userEntity.UserAddress.City
@@ -27,13 +27,13 @@ namespace ExpectedObjectsSample.Library
             Total = orderDetail.Quantity * orderDetail.UnitPrice
         };
 
-        private static IEnumerable<OrderDomain> Convert(IEnumerable<OrderEntity> orders) => orders == null ? null : orders.Select(Convert);
+        private static IEnumerable<OrderDomain> Convert(IEnumerable<OrderEntity> orders) => orders?.Select(Convert).ToList();
 
         private static OrderDomain Convert(OrderEntity orderEntity) => orderEntity == null ? null : new OrderDomain
         {
             OrderNumber =  $"FA-{orderEntity.Id}",
             OrderDate = orderEntity.OrderDate,
-            OrderDetails = orderEntity.OrderDetails == null ? null : orderEntity.OrderDetails.Select(Convert)
+            OrderDetails = orderEntity.OrderDetails?.Select(Convert).ToList()
         };
     }
 }
