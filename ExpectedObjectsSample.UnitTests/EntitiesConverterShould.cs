@@ -152,7 +152,8 @@ namespace ExpectedObjectsSample.UnitTests
                                 UnitPrice = 5.2,
                                 Total = 52.0
                             }
-                        }
+                        },
+                        Total = 114.5
                     }
                 }
             }.ToExpectedObject();
